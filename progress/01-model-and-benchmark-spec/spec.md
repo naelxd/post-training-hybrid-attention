@@ -74,7 +74,7 @@ For each (model/config, input length):
 
 All results should be reportable as a single “main table” plus small supporting tables/plots.
 
-### Main table (required)
+### Main table
 
 One row per configuration per length setting:
 
@@ -84,29 +84,17 @@ One row per configuration per length setting:
 - `output_len`
 - `total_len`
 - throughput (tok/s)
-- latency P50/P95
+- output throughput (tok/s)
 - peak GPU memory (GiB)
 - notes (OOM, fallback, instability)
 
-### Accuracy tables (required)
+### Accuracy tables
 
 - NIAH table: rows=config, cols=`input_len`, cells=accuracy
 - LongBench V2 table: rows=config, cols=`input_len`, cells=overall score
 
-### Rules for comparing configs
-
-- Only compare results obtained on the **same hardware** and **same vLLM settings** (unless the difference is the explicit subject of the comparison).
-- Any deviation (different dtype, different max length, different sampling params) must be treated as a separate config and explicitly labeled.
-- When reporting deltas vs baseline (`full attention`), include both:
-  - absolute metric values
-  - relative change (%) where meaningful
-
 ### Minimal reporting conventions (to keep results comparable)
 
 - Use a consistent identifier scheme for configs: `model + attention_variant + length_setting + dtype`.
-- Report numbers with fixed precision:
-  - throughput: 2 significant digits or 1 decimal (pick one and keep it consistent)
-  - memory: 0.1 GiB precision
-  - accuracy scores: 0.1 (or the dataset's native precision), but keep consistent across configs
 - For any averaged number, state the aggregation: `median over N runs` for throughput, and the exact dataset split/version for accuracy.
 - Always include a small “environment block” with: GPU, CUDA, driver, PyTorch, vLLM, and the exact model revision/hash.
