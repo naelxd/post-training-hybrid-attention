@@ -26,6 +26,7 @@ Throughout this spec, when we say “context length”, we mean `input_len` (pro
 - Use vLLM throughput benchmark (the standard vLLM benchmark script) with **random prompts**.
 - Measure across three decode lengths:
   - `output_len` in {128, 512, 2048}
+- Use a reasonably big number of requests, say `64`
 
 ### Reporting metrics (throughput)
 
