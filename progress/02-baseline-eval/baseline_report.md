@@ -104,16 +104,21 @@ Fill this table with the corresponding scores by aggregating scores from `baseli
 - Anything that may affect comparability (batch size caps, fallback kernels, etc.): -
 
 ## Repro pointers
+
 High-level pointers only (raw commands/scripts live elsewhere).
-- Throughput script entrypoint: vllm_bench.py
-- NIAH eval entrypoint: run_niah_test.py
-- LongBench V2 eval entrypoint: get_longbench_metrics.py
-- How to regenerate tables from the three CSVs:
-  1. `vllm_bench.py` automates throughput testing for vLLM models across 12 configurations (4k/8k/16k/32k input tokens × 128/512/2048 output tokens), running 3 iterations per configuration. It captures key metrics including output tokens/s (decode throughput), total tokens/s, requests/s, peak GPU memory, and OOM status, then saves results to JSON and CSV files with median statistics. To run the script, first install dependencies with `pip install numpy pandas tabulate vllm`, then execute `python vllm_bench.py`.
-  2. The `run_niah_test.py` script must be placed in the official NIAH repository folder, as it depends on files from there.
-  Running the test:
-    2.1. Start the vllm server with the Qwen3-4B model.
-    2.2. Clone the repository: `https://github.com/gkamradt/LLMTest_NeedleInAHaystack`
-    2.3. The script requires the `needlehaystack/PaulGrahamEssays` folder to exist.
-    2.4. Place the script in the `needlehaystack` folder and run it.
-  3. Run LongBenchV2 by following the official repository instructions at https://github.com/THUDM/LongBench. Once the benchmark is complete and you have the result file, run the `get_longbench_metrics.py` script from within the LongBench folder to calculate the metrics.
+
+- **Throughput script entrypoint:** `vllm_bench.py`
+- **NIAH eval entrypoint:** `run_niah_test.py`
+- **LongBench V2 eval entrypoint:** `get_longbench_metrics.py`
+
+### How to regenerate tables from the three CSVs
+
+1. **`vllm_bench.py`** – automates throughput testing for vLLM models across 12 configurations (4k/8k/16k/32k input tokens × 128/512/2048 output tokens), running 3 iterations per configuration. It captures key metrics including output tokens/s (decode throughput), total tokens/s, requests/s, peak GPU memory, and OOM status, then saves results to JSON and CSV files with median statistics. To run the script, first install dependencies with `pip install numpy pandas tabulate vllm`, then execute `python vllm_bench.py`.
+
+2. **`run_niah_test.py`** – must be placed in the official NIAH repository folder, as it depends on files from there. Running the test:
+   - Start the vLLM server with the Qwen3-4B model.
+   - Clone the repository: `https://github.com/gkamradt/LLMTest_NeedleInAHaystack`
+   - The script requires the `needlehaystack/PaulGrahamEssays` folder to exist.
+   - Place the script in the `needlehaystack` folder and run it.
+
+3. **LongBench V2** – run the benchmark by following the official repository instructions at [https://github.com/THUDM/LongBench](https://github.com/THUDM/LongBench). Once the benchmark is complete and you have the result file, run the `get_longbench_metrics.py` script from within the LongBench folder to calculate the metrics.
