@@ -40,18 +40,18 @@ This report the environment, protocol, and results for the **full-attention** Qw
 ### Throughput (vLLM)
 | input_len | output_len | decode tok/s | total tok/s | req/s | peak mem (GiB) | OOM | notes |
 |----------:|-----------:|-------------:|------------:|------:|---------------:|:---:|------|
-| 4k        | 128        | 6263.0       | 6263.0      | 5.44  | 22.60         | 0   |      |
-| 4k        | 512        | 6272.2       | 6272.2      | 5.44  | 22.64         | 0   |      |
-| 4k        | 2048       | 6266.7       | 6266.7      | 5.44  | 22.60         | 0   |      |
-| 8k        | 128        | 5705.3       | 5705.3      | 4.95  | 22.60         | 0   |      |
-| 8k        | 512        | 5703.3       | 5703.3      | 4.95  | 22.60         | 0   |      |
-| 8k        | 2048       | 5710.8       | 5710.8      | 4.96  | 22.60         | 0   |      |
-| 16k       | 128        | 4578.0       | 4578.0      | 3.97  | 22.60         | 0   |      |
-| 16k       | 512        | 4564.4       | 4564.4      | 3.96  | 22.60         | 0   |      |
-| 16k       | 2048       | 4580.1       | 4580.1      | 3.98  | 22.60         | 0   |      |
-| 33k       | 128        | 3355.2       | 3355.2      | 2.91  | 22.34         | 0   |      |
-| 33k       | 512        | 3359.8       | 3359.8      | 2.92  | 22.34         | 0   |      |
-| 33k       | 2048       | 3334.1       | 3334.1      | 2.89  | 22.30         | 0   |      |
+| 4k        | 128        | 692.1        | 6228.6      | 5.41  | 22.60         | 0   |      |
+| 4k        | 512        | 689.7        | 6207.2      | 5.39  | 22.60         | 0   |      |
+| 4k        | 2048       | 689.4        | 6204.3      | 5.39  | 22.60         | 0   |      |
+| 8k        | 128        | 629.1        | 5661.9      | 4.91  | 22.64         | 0   |      |
+| 8k        | 512        | 630.1        | 5671.1      | 4.92  | 22.60         | 0   |      |
+| 8k        | 2048       | 628.4        | 5655.9      | 4.91  | 22.60         | 0   |      |
+| 16k       | 128        | 503.8        | 4533.9      | 3.94  | 22.64         | 0   |      |
+| 16k       | 512        | 502.5        | 4522.7      | 3.93  | 22.60         | 0   |      |
+| 16k       | 2048       | 504.1        | 4536.9      | 3.94  | 22.60         | 0   |      |
+| 33k       | 128        | 366.5        | 3298.5      | 2.86  | 22.30         | 0   |      |
+| 33k       | 512        | 370.5        | 3334.7      | 2.89  | 22.34         | 0   |      |
+| 33k       | 2048       | 371.0        | 3339.2      | 2.90  | 22.34         | 0   |      |
 
 ### NIAH
 - Dataset/version: PaulGrahamEssays
@@ -109,6 +109,11 @@ High-level pointers only (raw commands/scripts live elsewhere).
 - NIAH eval entrypoint: run_niah_test.py
 - LongBench V2 eval entrypoint: get_longbench_metrics.py
 - How to regenerate tables from the three CSVs:
-  1. `vllm_bench.py` is run with Python; you just need to install the dependencies.
-  2. `run_niah_test.py` needs to be placed in the official NIAH repository folder, as it requires files from there.
-  3. LongBenchV2 was run using the official repository.
+  1. `vllm_bench.py` automates throughput testing for vLLM models across 12 configurations (4k/8k/16k/32k input tokens × 128/512/2048 output tokens), running 3 iterations per configuration. It captures key metrics including output tokens/s (decode throughput), total tokens/s, requests/s, peak GPU memory, and OOM status, then saves results to JSON and CSV files with median statistics. To run the script, first install dependencies with `pip install numpy pandas tabulate vllm`, then execute `python vllm_bench.py`.
+  2. The `run_niah_test.py` script must be placed in the official NIAH repository folder, as it depends on files from there.
+  Running the test:
+    2.1. Start the vllm server with the Qwen3-4B model.
+    2.2. Clone the repository: `https://github.com/gkamradt/LLMTest_NeedleInAHaystack`
+    2.3. The script requires the `needlehaystack/PaulGrahamEssays` folder to exist.
+    2.4. Place the script in the `needlehaystack` folder and run it.
+  3. Run LongBenchV2 by following the official repository instructions at https://github.com/THUDM/LongBench. Once the benchmark is complete and you have the result file, run the `get_longbench_metrics.py` script from within the LongBench folder to calculate the metrics.
