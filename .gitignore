@@ -1,6 +1,7 @@
 # vim
 *.swp
 *.swo
-vkr.*
+vkr_description.*
+vkr.tex
 images/
 scripts/
